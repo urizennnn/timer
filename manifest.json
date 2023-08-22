@@ -1,0 +1,15 @@
+{
+  "name": "Timer",
+  "version": "1.0.0",
+  "author": "Akaaha Victor",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Timer"
+    
+    },
+  
+
+  "permissions": ["storage"]
+ 
+}
