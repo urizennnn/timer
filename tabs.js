@@ -19,17 +19,20 @@ const timeList = document.querySelector('.time-list ul')
 
 // Call the function to retrieve and insert data
 
-
+function getStorge(keysToRetrieve){
     chrome.storage.local.get(keysToRetrieve,  (result)=> {
-        const{purpose,timeLeft,amount_time}= result
+       const {keysToRetrieve} = result
         if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
         } else {
-             // Assuming you want to use the entire result
-            const html =  // Convert to JSON string for display
-            timeList.insertAdjacentHTML('afterbegin', html);
+
+         return keysToRetrieve
+
         }
+
+
+        
     });
-
-
-
+}
+const purpose = getStorge(purpose)
+console.log(purpose)

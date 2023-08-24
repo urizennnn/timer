@@ -1,58 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
-'use strict';
+    'use strict';
 
-// Import the uuidv4 function or define it if it's a custom function
+    // Import the uuidv4 function or define it if it's a custom function
+    const newid = generateUniqueId();
+    const details = document.querySelector('.details');
+    const num = document.querySelector('.num');
+    const takeABreak = document.querySelector('.break');
+    const time = document.querySelector('.time');
+    const h3 = document.querySelector('h3');
+    const submit = document.querySelector('.submit');
+    const main = document.querySelector('.main');
+    const detailsNum = document.querySelector('.detailsNum');
+    const timer = document.querySelector('.timer');
 
+    if (takeABreak) {
+        takeABreak.addEventListener('click', () => {
+            takeABreak.classList.add('hidden');
+            h3.textContent = 'Finally';
+            details.classList.remove('hidden');
+        });
+    }
 
+    if (details) {
+        details.addEventListener('keydown', () => {
+            num.classList.remove('hidden');
+        });
+    }
 
+    if (num) {
+        num.addEventListener('keydown', () => {
+            time.classList.remove('hidden');
+        });
+    }
 
-const newid=generateUniqueId()
-const details = document.querySelector('.details');
-const num = document.querySelector('.num');
-const takeABreak = document.querySelector('.break');
-const time = document.querySelector('.time');
-const h3 = document.querySelector('h3');
-const submit = document.querySelector('.submit');
-const main = document.querySelector('.main');
-const detailsNum = document.querySelector('.detailsNum');
-const timer = document.querySelector('.timer');
+    if (submit) {
+        submit.addEventListener('click', () => {
+            const timeValue = timer.value;
+            const detailsValue = detailsNum.value;
+            const mainValue = main.value;
 
-takeABreak.addEventListener('click', () => {
-    takeABreak.classList.add('hidden');
-    h3.textContent = 'Finally';
-    details.classList.remove('hidden');
+            // Create an object with the correct syntax
+            const data = {
+                id: newid,
+                amount_time: detailsValue,
+                purpose: mainValue,
+                time: timeValue,
+                timeLeft: 'Specify a value here', // You should specify a value
+                fulfilled: false
+            };
+            chrome.runtime.sendMessage(data);
+            setStorage(data);
+
+            // Redirect the user to a new URL
+            window.location.href = '/tabs.html';
+
+            // You might want to save the updated array back to a database or perform other actions here
+        });
+    }
 });
-
-details.addEventListener('keydown', () => {
-    num.classList.remove('hidden');
-});
-
-num.addEventListener('keydown', () => {
-    time.classList.remove('hidden');
-});
-
-submit.addEventListener('click', () => {
-    const timeValue = timer.value;
-    const detailsValue = detailsNum.value;
-    const mainValue = main.value;
-    
-
-    // Create an object with the correct syntax
-    const data = {
-        id: newid,
-        amount_time:detailsValue,
-        purpose: mainValue,
-        time: timeValue,
-        timeLeft: 'Specify a value here', // You should specify a value
-        fulfilled: false
-    };
-        chrome.runtime.sendMessage(data)
-        setStorage(data)
-    
-    // Redirect the user to a new URL
-    window.location.href = '/tabs.html';
-
-
-    // You might want to save the updated array back to a database or perform other actions here
-});
-})
