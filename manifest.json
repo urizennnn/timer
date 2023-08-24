@@ -6,7 +6,12 @@
   "action": {
     "default_popup": "index.html",
     "default_title": "Timer"
-   
   },
-  "permissions": ["activeTab", "storage"]
+  "icons": {
+    "48": "icon.jpg"
+  },
+  "permissions": ["activeTab", "storage", "notifications"],
+  "background": {
+    "service_worker": "background.js"
+  }
 }

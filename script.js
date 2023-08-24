@@ -34,17 +34,18 @@ submit.addEventListener('click', () => {
     const timeValue = timer.value;
     const detailsValue = detailsNum.value;
     const mainValue = main.value;
+    
 
     // Create an object with the correct syntax
     const data = {
         id: newid,
+        amount_time:detailsValue,
         purpose: mainValue,
         time: timeValue,
         timeLeft: 'Specify a value here', // You should specify a value
         fulfilled: false
     };
-        setStorage(data)
-    
+        chrome.runtime.sendMessage(data)
     
     // Redirect the user to a new URL
     window.location.href = '/tabs.html';
