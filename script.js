@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    // Import the uuidv4 function or define it if it's a custom function
-    const newid = generateUniqueId();
+    // Import the generateUniqueId function or define it if it's a custom function
+    const newid = generateUniqueId(); // Make sure this function is defined and returns a unique ID
     const details = document.querySelector('.details');
     const num = document.querySelector('.num');
     const takeABreak = document.querySelector('.break');
     const time = document.querySelector('.time');
     const h3 = document.querySelector('h3');
     const submit = document.querySelector('.submit');
-    const main = document.querySelector('.main');
-    const detailsNum = document.querySelector('.detailsNum');
+    const purposeInput = document.querySelector('.purpose'); // Renamed to avoid naming conflict
+    const measurement = document.querySelector('.measurement');
     const timer = document.querySelector('.timer');
 
     if (takeABreak) {
@@ -36,20 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submit) {
         submit.addEventListener('click', () => {
             const timeValue = timer.value;
-            const detailsValue = detailsNum.value;
-            const mainValue = main.value;
+            const detailsValue = measurement.value;
+            const purposeValue = purposeInput.value; // Renamed to avoid naming conflict
 
             // Create an object with the correct syntax
             const data = {
                 id: newid,
                 amount_time: detailsValue,
-                purpose: mainValue,
+                purpose: purposeValue,
                 time: timeValue,
                 timeLeft: 'Specify a value here', // You should specify a value
                 fulfilled: false
             };
             chrome.runtime.sendMessage(data);
-            setStorage(data);
 
             // Redirect the user to a new URL
             window.location.href = '/tabs.html';

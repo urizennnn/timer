@@ -8,7 +8,10 @@
     "default_title": "Timer"
   },
   "icons": {
-    "48": "icon.jpg"
+    "16": "icon.jpg",
+    "32": "icon.jpg",
+    "48": "icon.jpg",
+    "128": "icon.jpg"
   },
   "permissions": ["activeTab", "storage", "notifications"],
   "background": {
