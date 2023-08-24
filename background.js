@@ -1,48 +1,78 @@
 'use strict'
-function countdownSec(seconds) {
-    let timer = setInterval(function () {
+let newData;
+function countdownSec(seconds, data) {
+    let timer = setInterval(() => {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
+            // Optionally, update data.fulfilled to true or perform other actions here
+            data.fulfilled = true;
+            newData = data
+            chrome.storage.local.set(newData)
+            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
+                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
+                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
+            })
         } else {
-            console.log(seconds);
+            data.timeLeft = seconds; // Update timeLeft with the remaining time in seconds
             seconds--;
         }
     }, 1000); // Update every 1000 milliseconds (1 second)
 }
-function countdownMin(minutes) {
+
+function countdownMin(minutes, data) {
     let seconds = minutes * 60; // Convert minutes to seconds
 
-    let timer = setInterval(function () {
+    let timer = setInterval(() => {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
+            data.fulfilled = true;
+            newData = data
+            chrome.storage.local.set(newData)
+            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
+                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
+                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
+            })
+
         } else {
             const minutesRemaining = Math.floor(seconds / 60);
             const secondsRemaining = seconds % 60;
 
             console.log(`Minutes: ${minutesRemaining}, Seconds: ${secondsRemaining}`);
+            data.timeLeft = seconds; // Update timeLeft with the remaining time in seconds
             seconds--;
         }
     }, 1000); // Update every 1000 milliseconds (1 second)
 }
-function countdownHours(hours) {
+
+function countdownHours(hours, data) {
     let seconds = hours * 3600; // Convert hours to seconds
 
-    let timer = setInterval(function () {
+    let timer = setInterval(() => {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
+            data.fulfilled = true;
+            newData = data
+            chrome.storage.local.set(newData)
+            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
+                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
+                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
+            })
+
         } else {
             const hoursRemaining = Math.floor(seconds / 3600);
             const minutesRemaining = Math.floor((seconds % 3600) / 60);
             const secondsRemaining = seconds % 60;
 
             console.log(`Hours: ${hoursRemaining}, Minutes: ${minutesRemaining}, Seconds: ${secondsRemaining}`);
+            data.timeLeft = seconds; // Update timeLeft with the remaining time in seconds
             seconds--;
         }
     }, 1000); // Update every 1000 milliseconds (1 second)
 }
+
 // function setStorage(data) {
 //     chrome.storage.sync.get(data, function (result) {
 //         if (chrome.runtime.lastError) {
@@ -73,27 +103,34 @@ function countdownHours(hours) {
 
 
 chrome.runtime.onMessage.addListener(data => {
-    const {id, amount_time,time,purpose,timeLeft,fulfilled} = data
-    chrome.storage.local.set(data)
+    const { id, amount_time, time, purpose, timeLeft, fulfilled = false } = data;
+
+    // Initialize timeLeft based on the selected time unit
     switch (amount_time) {
         case 'seconds':
-            countdownSec(time);
-            console.log("seconds")
-           
+            data.timeLeft = time; // For seconds, timeLeft is the same as the input time
+            countdownSec(time, data); // Start the countdown with the initial time
             break;
         case 'hours':
-            countdownHours(time);
-            console.log("hours")
-          
+            data.timeLeft = time * 3600; // Convert hours to seconds
+            countdownHours(time, data); // Start the countdown with the initial time
             break;
         case 'minutes':
-            countdownMin(time);
-            console.log("minutes")
-                 
+            data.timeLeft = time * 60; // Convert minutes to seconds
+            countdownMin(time, data); // Start the countdown with the initial time
             break;
         default:
             // Handle unexpected values for data.amount_time
             console.error('Unexpected value for data.amount_time:', amount_time);
             break;
     }
-})
+
+    chrome.storage.local.set(data)
+    chrome.storage.local.get(['fulfilled'], (result) => {
+        const { fulfilled } = result
+        console.log(`result is ${fulfilled}`);
+    })
+
+});
+
+

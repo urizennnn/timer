@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 amount_time: detailsValue,
                 purpose: purposeValue,
                 time: timeValue,
-                timeLeft: 'Specify a value here', // You should specify a value
+                timeLeft: undefined, // You should specify a value
                 fulfilled: false
             };
             chrome.runtime.sendMessage(data);
