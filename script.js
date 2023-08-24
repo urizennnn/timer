@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', () => {
 'use strict';
 
 // Import the uuidv4 function or define it if it's a custom function
@@ -46,6 +47,7 @@ submit.addEventListener('click', () => {
         fulfilled: false
     };
         chrome.runtime.sendMessage(data)
+        setStorage(data)
     
     // Redirect the user to a new URL
     window.location.href = '/tabs.html';
@@ -53,3 +55,4 @@ submit.addEventListener('click', () => {
 
     // You might want to save the updated array back to a database or perform other actions here
 });
+})

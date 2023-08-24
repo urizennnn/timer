@@ -45,25 +45,7 @@ function countdownHours(hours) {
 }
 
 
-// function setStorage(data) {
-//     chrome.storage.local.get(data, function (result) {
-//         if (!chrome.runtime.lastError) {
-//             const existingData = result; // Retrieve existing data
 
-//             // Merge existing data with new data
-//             const mergedData = { ...existingData, ...data };
-
-//             // Store the merged data back in local storage
-//             chrome.storage.local.set(mergedData, function () {
-//                 if (chrome.runtime.lastError) {
-//                     console.error(chrome.runtime.lastError);
-//                 } else {
-//                     console.log('Data merged and updated successfully.');
-//                 }
-//             });
-//         }
-//     });
-// }
 
 
 function generateUniqueId() {
@@ -73,12 +55,3 @@ function generateUniqueId() {
     return id.slice(0, 8); // Slice and return the first 9 characters of the ID
 }
 
-function getStorage() {
-    chrome.storage.sync.get(data, function (result) {
-        if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
-        } else {
-            console.log('Retrieved data from sync storage:', result);
-        }
-    });
-}
