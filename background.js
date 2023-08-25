@@ -1,5 +1,8 @@
-'use strict'
-let newData;
+'use strict';
+
+// LOCAL DATABASE (as an array)
+const database = [];
+let newData
 function countdownSec(seconds, data) {
     let timer = setInterval(() => {
         if (seconds <= 0) {
@@ -7,12 +10,8 @@ function countdownSec(seconds, data) {
             console.log('Countdown complete!');
             // Optionally, update data.fulfilled to true or perform other actions here
             data.fulfilled = true;
-            newData = data
-            chrome.storage.local.set(newData)
-            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
-                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
-                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
-            })
+            newData = data;
+            chrome.storage.local.set(newData);
         } else {
             data.timeLeft = seconds; // Update timeLeft with the remaining time in seconds
             seconds--;
@@ -28,13 +27,8 @@ function countdownMin(minutes, data) {
             clearInterval(timer);
             console.log('Countdown complete!');
             data.fulfilled = true;
-            newData = data
-            chrome.storage.local.set(newData)
-            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
-                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
-                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
-            })
-
+            newData = data;
+            chrome.storage.local.set(newData);
         } else {
             const minutesRemaining = Math.floor(seconds / 60);
             const secondsRemaining = seconds % 60;
@@ -54,13 +48,8 @@ function countdownHours(hours, data) {
             clearInterval(timer);
             console.log('Countdown complete!');
             data.fulfilled = true;
-            newData = data
-            chrome.storage.local.set(newData)
-            chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
-                const { id, amount_time, time, purpose, timeLeft, fulfilled } = result
-                console.log(id, amount_time, time, purpose, timeLeft, fulfilled)
-            })
-
+            newData = data;
+            chrome.storage.local.set(newData);
         } else {
             const hoursRemaining = Math.floor(seconds / 3600);
             const minutesRemaining = Math.floor((seconds % 3600) / 60);
@@ -74,13 +63,14 @@ function countdownHours(hours, data) {
 }
 
 function setStorage(data) {
-    chrome.storage.sync.get(data, function (result) {
+    // Retrieve existing data from chrome.storage.local
+    chrome.storage.local.get(null, function (result) {
         if (chrome.runtime.lastError) {
             console.error("Error while getting data: " + chrome.runtime.lastError);
             return;
         }
 
-        const existingData = result; // Retrieve existing data
+        const existingData = result || {}; // Initialize existingData as an empty object if no data exists
 
         // Merge existing data with new data
         const mergedData = { ...existingData, ...data };
@@ -96,11 +86,7 @@ function setStorage(data) {
     });
 }
 
-
 // Example usage:
-
-
-
 
 chrome.runtime.onMessage.addListener(data => {
     const { id, amount_time, time, purpose, timeLeft, fulfilled = false } = data;
@@ -125,16 +111,37 @@ chrome.runtime.onMessage.addListener(data => {
             break;
     }
 
-    setStorage(data)
-
-
+    setStorage(data);
 });
+
 function callNotification() {
-    console.log('notifications called')
+    console.log('notifications called');
     chrome.notifications.create({
         title: "Timer",
         message: "Your time is up",
         iconUrl: 'icon.jpg',
         type: 'basic'
-    })
+    });
 }
+
+function storageChange() {
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local' && changes.fulfilled) {
+            const fulfilled = changes.fulfilled.newValue;
+
+            if (fulfilled === true) {
+                callNotification(); // Define this function elsewhere in your code
+            }
+        }
+    });
+}
+
+storageChange();
+
+setInterval(() => {
+    chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
+        const { id, amount_time, time, purpose, timeLeft, fulfilled } = result;
+        database.push(result);
+    });
+}, 
+)
