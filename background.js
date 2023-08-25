@@ -132,5 +132,12 @@ chrome.runtime.onMessage.addListener(data => {
     })
 
 });
-
-
+function callNotification() {
+    console.log('notifications called')
+    chrome.notifications.create({
+        title: "Timer",
+        message: "Your time is up",
+        iconUrl: 'icon.jpg',
+        type: 'basic'
+    })
+}
