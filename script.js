@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (takeABreak) {
         takeABreak.addEventListener('click', () => {
+            submit.classList.remove('hidden')
             takeABreak.classList.add('hidden');
             h3.textContent = 'Finally';
             details.classList.remove('hidden');
