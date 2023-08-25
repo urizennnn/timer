@@ -73,28 +73,28 @@ function countdownHours(hours, data) {
     }, 1000); // Update every 1000 milliseconds (1 second)
 }
 
-// function setStorage(data) {
-//     chrome.storage.sync.get(data, function (result) {
-//         if (chrome.runtime.lastError) {
-//             console.error("Error while getting data: " + chrome.runtime.lastError);
-//             return;
-//         }
+function setStorage(data) {
+    chrome.storage.sync.get(data, function (result) {
+        if (chrome.runtime.lastError) {
+            console.error("Error while getting data: " + chrome.runtime.lastError);
+            return;
+        }
 
-//         const existingData = result; // Retrieve existing data
+        const existingData = result; // Retrieve existing data
 
-//         // Merge existing data with new data
-//         const mergedData = { ...existingData, ...data };
+        // Merge existing data with new data
+        const mergedData = { ...existingData, ...data };
 
-//         // Store the merged data back in local storage
-//         chrome.storage.local.set(mergedData, function () {
-//             if (chrome.runtime.lastError) {
-//                 console.error("Error while setting data: " + chrome.runtime.lastError);
-//             } else {
-//                 console.log('Data merged and updated successfully.');
-//             }
-//         });
-//     });
-// }
+        // Store the merged data back in local storage
+        chrome.storage.local.set(mergedData, function () {
+            if (chrome.runtime.lastError) {
+                console.error("Error while setting data: " + chrome.runtime.lastError);
+            } else {
+                console.log('Data merged and updated successfully.');
+            }
+        });
+    });
+}
 
 
 // Example usage:
@@ -125,11 +125,8 @@ chrome.runtime.onMessage.addListener(data => {
             break;
     }
 
-    chrome.storage.local.set(data)
-    chrome.storage.local.get(['fulfilled'], (result) => {
-        const { fulfilled } = result
-        console.log(`result is ${fulfilled}`);
-    })
+    setStorage(data)
+
 
 });
 function callNotification() {

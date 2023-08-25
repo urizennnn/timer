@@ -1,5 +1,5 @@
 'use strict';
-
+// closeWindow()
 const timeList = document.querySelector('.time-list h3'); // Make sure this selector matches your HTML structure
 
 // Check if there is data in chrome.storage.local and update the text accordingly
@@ -21,6 +21,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
             clearText(); // This will reset the text after a delay
         }
     }
+    
 });
 
 
@@ -29,4 +30,9 @@ function clearText() {
     setTimeout(() => {
         timeList.innerHTML = '<h3>You do not have any running timers</h3>';
     }, 3000); // This clears the text after 3 seconds, adjust the delay as needed
+}
+function closeWindow(){
+    setTimeout(() => {
+        window.close()
+    }, 3000);
 }
