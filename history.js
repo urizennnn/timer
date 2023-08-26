@@ -1,8 +1,9 @@
 'use strict'
+import { database } from "./background";
 const history_list = document.querySelector('.history ul')
-console.log("WOrking")
 
-chrome.storage.local.get(["purpose","time"] ,(result)=>{
-        const{purpose,time} = result
-        console.log(purpose,time)
-})
+console.log(database)
+
+setTimeout(() => {
+        console.log(database)
+}, 10000);

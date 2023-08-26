@@ -1,17 +1,14 @@
 'use strict';
 
 // LOCAL DATABASE (as an array)
-const database = [];
+ const database = [];
 let newData
 function countdownSec(seconds, data) {
     let timer = setInterval(() => {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
-            // Optionally, update data.fulfilled to true or perform other actions here
-            data.fulfilled = true;
-            newData = data;
-            chrome.storage.local.set(newData);
+            storageChange(data)
         } else {
             data.timeLeft = seconds; // Update timeLeft with the remaining time in seconds
             seconds--;
@@ -26,9 +23,7 @@ function countdownMin(minutes, data) {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
-            data.fulfilled = true;
-            newData = data;
-            chrome.storage.local.set(newData);
+            storageChange(data)
         } else {
             const minutesRemaining = Math.floor(seconds / 60);
             const secondsRemaining = seconds % 60;
@@ -47,9 +42,7 @@ function countdownHours(hours, data) {
         if (seconds <= 0) {
             clearInterval(timer);
             console.log('Countdown complete!');
-            data.fulfilled = true;
-            newData = data;
-            chrome.storage.local.set(newData);
+            storageChange(data)
         } else {
             const hoursRemaining = Math.floor(seconds / 3600);
             const minutesRemaining = Math.floor((seconds % 3600) / 60);
@@ -84,6 +77,8 @@ function setStorage(data) {
             }
         });
     });
+    database.push(data)
+    console.log(data)
 }
 
 // Example usage:
@@ -112,6 +107,7 @@ chrome.runtime.onMessage.addListener(data => {
     }
 
     setStorage(data);
+    chrome.storage.local.clear()
 });
 
 function callNotification() {
@@ -124,7 +120,8 @@ function callNotification() {
     });
 }
 
-function storageChange() {
+function storageChange(data) {
+    data.fulfilled = true
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'local' && changes.fulfilled) {
             const fulfilled = changes.fulfilled.newValue;
@@ -134,14 +131,11 @@ function storageChange() {
             }
         }
     });
+    setStorage(data)
+    database.push(data)
+    console.log(database)
+    chrome.storage.local.clear()
 }
 
-storageChange();
 
-setInterval(() => {
-    chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled'], (result) => {
-        const { id, amount_time, time, purpose, timeLeft, fulfilled } = result;
-        database.push(result);
-    });
-}, 
-)
+
