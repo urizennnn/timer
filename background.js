@@ -107,7 +107,7 @@ chrome.runtime.onMessage.addListener(data => {
     }
 
     setStorage(data);
-    chrome.storage.local.clear()
+    
 });
 
 function callNotification() {
@@ -134,7 +134,7 @@ function storageChange(data) {
     setStorage(data)
     database.push(data)
     console.log(database)
-    chrome.storage.local.clear()
+   
 }
 
 
