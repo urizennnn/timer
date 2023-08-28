@@ -110,6 +110,8 @@ chrome.runtime.onMessage.addListener(data => {
 
 });
 
+
+
 function callNotification() {
     console.log('notifications called');
     chrome.notifications.create({

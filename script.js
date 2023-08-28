@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeLeft: undefined, // You should specify a value
                 fulfilled: false
             };
+            // kol
             chrome.runtime.sendMessage(data);
             closeWindow()
             // Redirect the user to a new URL

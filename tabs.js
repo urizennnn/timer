@@ -88,7 +88,7 @@ let Purpose
 
                 let timer = setInterval(() => {
                     if (seconds <= 0) {
-                        clearInterval(timer);
+                      clearInterval(timer);
                         console.log('Countdown complete!');
                          chrome.storage.local.clear()
                     } else {

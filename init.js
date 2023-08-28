@@ -28,7 +28,7 @@ function countdownMin(minutes) {
 }
 function countdownHours(hours) {
     let seconds = hours * 3600; // Convert hours to seconds
-
+// uoi
     let timer = setInterval(function () {
         if (seconds <= 0) {
             clearInterval(timer);
