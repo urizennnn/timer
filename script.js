@@ -1,6 +1,6 @@
+'use strict';
+let clicked = false
 document.addEventListener('DOMContentLoaded', () => {
-    'use strict';
-
     // Import the generateUniqueId function or define it if it's a custom function
     const newid = generateUniqueId(); // Make sure this function is defined and returns a unique ID
     const details = document.querySelector('.details');
@@ -50,10 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 fulfilled: false
             };
             chrome.runtime.sendMessage(data);
-
+            closeWindow()
             // Redirect the user to a new URL
-            window.location.href = '/tabs.html';
+            redirect();
+    
 
+            function redirect() {
+                clicked = true;
+                window.location.href = '/tabs.html';
+            }
             // You might want to save the updated array back to a database or perform other actions here
         });
     }

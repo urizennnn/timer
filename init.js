@@ -55,3 +55,8 @@ function generateUniqueId() {
     return id.slice(0, 8); // Slice and return the first 9 characters of the ID
 }
 
+function closeWindow() {
+    setTimeout(() => {
+        window.close()
+    }, 3000);
+}

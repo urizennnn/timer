@@ -1,8 +1,8 @@
 'use strict';
 
 // LOCAL DATABASE (as an array)
- const database = [];
-let newData
+const database = [];
+
 function countdownSec(seconds, data) {
     let timer = setInterval(() => {
         if (seconds <= 0) {
@@ -56,30 +56,30 @@ function countdownHours(hours, data) {
 }
 
 function setStorage(data) {
-    // Retrieve existing data from chrome.storage.local
-    chrome.storage.local.get(null, function (result) {
+    // // Retrieve existing data from chrome.storage.local
+    // chrome.storage.local.get(null, function (result) {
+    //     if (chrome.runtime.lastError) {
+    //         console.error("Error while getting data: " + chrome.runtime.lastError);
+    //         return;
+    //     }
+
+    //     const existingData = result || {}; // Initialize existingData as an empty object if no data exists
+
+    //     // Merge existing data with new data
+    //     const mergedData = { ...existingData, ...data };
+
+    // Store the merged data back in local storage
+    chrome.storage.local.set(data, function () {
         if (chrome.runtime.lastError) {
-            console.error("Error while getting data: " + chrome.runtime.lastError);
-            return;
+            console.error("Error while setting data: " + chrome.runtime.lastError);
+        } else {
+            console.log('Data merged and updated successfully.');
         }
-
-        const existingData = result || {}; // Initialize existingData as an empty object if no data exists
-
-        // Merge existing data with new data
-        const mergedData = { ...existingData, ...data };
-
-        // Store the merged data back in local storage
-        chrome.storage.local.set(mergedData, function () {
-            if (chrome.runtime.lastError) {
-                console.error("Error while setting data: " + chrome.runtime.lastError);
-            } else {
-                console.log('Data merged and updated successfully.');
-            }
-        });
+        clearDb()
+        console.log(data)
     });
-    database.push(data)
-    console.log(data)
-}
+};
+
 
 // Example usage:
 
@@ -107,7 +107,7 @@ chrome.runtime.onMessage.addListener(data => {
     }
 
     setStorage(data);
-    
+
 });
 
 function callNotification() {
@@ -132,10 +132,18 @@ function storageChange(data) {
         }
     });
     setStorage(data)
-    database.push(data)
     console.log(database)
-   
+
 }
 
 
+
+
+
+function clearDb() {
+    if (database.length > 0) {
+        database.length = 0;
+        database.push(data);
+    }
+}
 
