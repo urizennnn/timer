@@ -46,6 +46,31 @@
             <option value="hours">Hours</option>
         </select>
     </div>
+    <div class="notification-settings hidden">
+        <fieldset>
+            <legend>Notification Preferences</legend>
+    
+            <div class="form-group">
+                <label for="notification-type">How would you like to be notified when the timer is done?</label>
+                <select id="notification-type" class="settings">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="default">Notification <i>(Recommended)</i></option>
+                    <option value="js">Intercepted <i>(For a brief amount of time the notification will appear on the
+                            current webpage)</i></option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="show-timer">Would you like to see the timer?</label>
+                <select id="show-timer" class="setting">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </fieldset>
+    </div>
+
     <button class="submit hidden">BREAK</button>
 <script src="init.js"></script>
 <script src="script.js"></script>

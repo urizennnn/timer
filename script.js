@@ -1,5 +1,5 @@
 'use strict';
-let clicked = false
+
 document.addEventListener('DOMContentLoaded', () => {
     // Import the generateUniqueId function or define it if it's a custom function
     const newid = generateUniqueId(); // Make sure this function is defined and returns a unique ID
@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const purposeInput = document.querySelector('.purpose'); // Renamed to avoid naming conflict
     const measurement = document.querySelector('.measurement');
     const timer = document.querySelector('.timer');
+    const settings = document.querySelector('.notification-settings')
+    const notificationType = document.querySelector('#notification-type')
+    const showTimer = document.querySelector('#show-timer')
 
     if (takeABreak) {
         takeABreak.addEventListener('click', () => {
@@ -33,13 +36,22 @@ document.addEventListener('DOMContentLoaded', () => {
             time.classList.remove('hidden');
         });
     }
+    if(time){
+        time.addEventListener('change',()=>{
+            settings.classList.remove('hidden')
+        })
+    }
+
 
     if (submit) {
         submit.addEventListener('click', () => {
             const timeValue = timer.value;
             const detailsValue = measurement.value;
             const purposeValue = purposeInput.value; // Renamed to avoid naming conflict
-
+            const showTimerValue= showTimer.value
+            const notificationValue = notificationType.value
+            if (showTimer) console.log(showTimerValue)
+            if (notificationType) console.log(notificationValue)
             // Create an object with the correct syntax
             const data = {
                 id: newid,
@@ -57,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
             function redirect() {
-                clicked = true;
                 window.location.href = '/tabs.html';
             }
             // You might want to save the updated array back to a database or perform other actions here
