@@ -26,13 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (details) {
-        details.addEventListener('keydown', () => {
+        details.addEventListener('change', () => {
             num.classList.remove('hidden');
         });
     }
 
     if (num) {
-        num.addEventListener('keydown', () => {
+        num.addEventListener('change', () => {
             time.classList.remove('hidden');
         });
     }
@@ -50,16 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const purposeValue = purposeInput.value; // Renamed to avoid naming conflict
             const showTimerValue= showTimer.value
             const notificationValue = notificationType.value
-            if (showTimer) console.log(showTimerValue)
-            if (notificationType) console.log(notificationValue)
+            // if (notificationValue) console.log(notificationValue)
+            
             // Create an object with the correct syntax
             const data = {
                 id: newid,
                 amount_time: detailsValue,
                 purpose: purposeValue,
                 time: timeValue,
-                timeLeft: undefined, // You should specify a value
-                fulfilled: false
+                timeLeft: undefined, 
+                fulfilled: false,
+                showTimer:showTimerValue,
+                notification:notificationValue
             };
             // kol
             chrome.runtime.sendMessage(data);

@@ -84,7 +84,7 @@ function setStorage(data) {
 // Example usage:
 
 chrome.runtime.onMessage.addListener(data => {
-    const { id, amount_time, time, purpose, timeLeft, fulfilled = false } = data;
+    const { id, amount_time, time, purpose, timeLeft, fulfilled = false,showTimer,notification } = data;
 
     // Initialize timeLeft based on the selected time unit
     switch (amount_time) {
@@ -107,7 +107,7 @@ chrome.runtime.onMessage.addListener(data => {
     }
 
     setStorage(data);
-
+    
 });
 
 
