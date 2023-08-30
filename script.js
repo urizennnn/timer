@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timer = document.querySelector('.timer');
     const settings = document.querySelector('.notification-settings')
     const notificationType = document.querySelector('#notification-type')
-    const showTimer = document.querySelector('#show-timer')
+   
 
     if (takeABreak) {
         takeABreak.addEventListener('click', () => {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const timeValue = timer.value;
             const detailsValue = measurement.value;
             const purposeValue = purposeInput.value; // Renamed to avoid naming conflict
-            const showTimerValue= showTimer.value
+          
             const notificationValue = notificationType.value
             // if (notificationValue) console.log(notificationValue)
             
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 time: timeValue,
                 timeLeft: undefined, 
                 fulfilled: false,
-                showTimer:showTimerValue,
+            
                 notification:notificationValue
             };
             // kol

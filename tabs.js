@@ -1,13 +1,8 @@
 'use strict';
-let Purpose
-// Check if the code has already been executed
-// if (!localStorage.getItem('codeExecuted')) {
-//     // Set a flag in local storage to indicate that the code has been executed
-//     localStorage.setItem('codeExecuted', 'true');
 
-// Wait for the DOM to be loaded before executing the script
-// document.addEventListener('DOMContentLoaded', () => {
+let Purpose;
 const timeList = document.querySelector('.time-list h3'); // Make sure this selector matches your HTML structure
+const hideButton = document.querySelector('.hide'); // Changed the variable name to avoid conflict
 
 // Function to update the countdown display
 function updateCountdownDisplay(timeLeft) {
@@ -18,7 +13,7 @@ function updateCountdownDisplay(timeLeft) {
 
         let displayText = '';
 
-        if (timeLeft === 0) displayText += `<h3>0 Seconds remaining</h3>`
+        if (timeLeft === 0) displayText += `<h3>0 Seconds remaining</h3>`;
 
         if (hoursRemaining > 0) {
             displayText += `<span>${Purpose}</span>${hoursRemaining} hour${hoursRemaining > 1 ? 's' : ''} `;
@@ -29,47 +24,30 @@ function updateCountdownDisplay(timeLeft) {
         }
 
         if (secondsRemaining > 0) {
-            displayText += `<span>${Purpose}</span> ${secondsRemaining} second${secondsRemaining > 1 ? 's' : ''}`;
+            displayText += `<span>${Purpose}</span> ${secondsRemaining === 1 ? '0' : secondsRemaining} second${secondsRemaining > 1 ? 's' : ''} `;
         }
 
-        timeList.innerHTML = `<h3>${displayText} left</h3>`;
+        timeList.innerHTML = `<h3>${displayText} left <span><button class='hide'>Hide</button></span></h3>`;
+
+        // Update the event listener for the Hide button
+        const hide = document.querySelector('.hide');
+        hide.addEventListener('click', () => {
+            timeList.style.display = 'none'; // This will hide the countdown display
+            console.log('working');
+        });
     } else {
         timeList.innerHTML = '<h3>Countdown complete!</h3>';
         clearText();
     }
-
 }
+
+
 
 // Check if there is data in chrome.storage.local and update the text accordingly
 chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'fulfilled', 'showTimer', 'notification'], result => {
     let { purpose, time, amount_time, timeLeft, showTimer, notification } = result;
 
-    switch (showTimer) {
-        case 'yes':
-            if (amount_time) {
-                switch (amount_time) {
-                    case 'seconds':
-                        countdownSec(time);
-                        break;
-                    case 'hours':
-                        countdownHours(time);
-                        break;
-                    case 'minutes':
-                        countdownMin(time);
-                        break;
-                    default:
-                        console.error('Unexpected value for data.amount_time:', amount_time);
-                        break;
-                }
-            }
-            break;
-        case 'no':
-            timeList.innerHTML = `<h3>Timer is running in the background</h3>`;
-            break;
-        default:
-            timeList.innerHTML = `<h3>You do not have any running timers</h3>`;
-            break;
-    }
+
     Purpose = purpose
     if (amount_time) {
         switch (amount_time) {
@@ -88,6 +66,7 @@ chrome.storage.local.get(['id', 'amount_time', 'time', 'purpose', 'timeLeft', 'f
                 break;
         }
     }
+    
 
     // Function to clear the text after a delay
     function clearText() {
