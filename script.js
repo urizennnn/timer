@@ -26,21 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (details) {
-        details.addEventListener('change', () => {
+        details.addEventListener('keydown', () => {
             num.classList.remove('hidden');
         });
     }
 
     if (num) {
-        num.addEventListener('change', () => {
+        num.addEventListener('keydown', () => {
             time.classList.remove('hidden');
         });
     }
-    if(time){
-        time.addEventListener('change',()=>{
-            settings.classList.remove('hidden')
-        })
-    }
+    // if(time){
+    //     time.addEventListener('change',()=>{
+    //         settings.classList.remove('hidden')
+    //     })
+    // }
 
 
     if (submit) {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const detailsValue = measurement.value;
             const purposeValue = purposeInput.value; // Renamed to avoid naming conflict
           
-            const notificationValue = notificationType.value
+            // const notificationValue = notificationType.value
             // if (notificationValue) console.log(notificationValue)
             
             // Create an object with the correct syntax
@@ -60,8 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 time: timeValue,
                 timeLeft: undefined, 
                 fulfilled: false,
-            
-                notification:notificationValue
             };
             // kol
             chrome.runtime.sendMessage(data);
